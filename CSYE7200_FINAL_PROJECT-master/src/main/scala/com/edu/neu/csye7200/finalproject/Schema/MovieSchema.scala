@@ -2,7 +2,7 @@ package com.edu.neu.csye7200.finalproject.Schema
 
 import org.apache.spark.sql.types._
 
-object BookSchema {
+object MovieSchema {
   val movieSchema=StructType(
     Seq(
       StructField("adult", BooleanType, true),
