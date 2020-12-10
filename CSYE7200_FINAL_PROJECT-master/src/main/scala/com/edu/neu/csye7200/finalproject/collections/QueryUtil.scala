@@ -14,7 +14,7 @@ object QueryUtil {
    * @param selectedType user's select for type of content ( companies,keywords,names)
    * @return Array[(Int,String,String,String,Int,String)] bookId,selectedType,Name,Description,PublishYear,RatingDistTotal
    */
-  def QueryMovieJson(df: DataFrame, content: String, selectedType: String) = {
+  def QueryBookJson(df: DataFrame, content: String, selectedType: String) = {
 
     val colsList = List(col("Id"), col(selectedType), col("Name"), col("Description"), col("PublishYear"), col("RatingDistTotal"))
     DataClean(df.select(colsList: _*)).filter(_ (5) != null).
@@ -40,7 +40,7 @@ object QueryUtil {
       row.getString(5))).filter(x => x._2.contains(content)).collect
   }
 
-  def QueryMovieIdByName(df: DataFrame, content: String) = {
+  def QueryBookIdByName(df: DataFrame, content: String) = {
     val colsList = List(col("Id"), col("Name"))
     df.select(colsList: _*).rdd.filter(_ (0) != null).filter(_ (1) != null).map(row => (row.getInt(0), row.getString(1))).filter(x => x._2.equals(content)).collect
   }
