@@ -26,12 +26,12 @@ object BookRecommendation {
     val books = DataUtil.getCandidatesAndLink(booksArray, links)
 
     val userRatingRDD = DataUtil.getRatingByUser(FileConfig.ratingFile, userId)
-    val userRatingMovie = userRatingRDD.map(x => x.product).collect
+    val userRatingBook = userRatingRDD.map(x => x.product).collect
     val numRatings = ratings.count()
     val numUser = ratings.map(_._2.user).distinct().count()
-    val numMovie = ratings.map(_._2.product).distinct().count()
+    val numBook = ratings.map(_._2.product).distinct().count()
 
-    println("rating: " + numRatings + " books: " + numMovie
+    println("rating: " + numRatings + " books: " + numBook
       + " user: " + numUser)
 
     // Split data into train(60%), validation(20%) and test(20%)
@@ -61,8 +61,8 @@ object BookRecommendation {
    * @return Array of [(Int,String,String,String,Date,Double)]
    *         with (movidId,selectedType,title,tagline,release_date,popularity)
    */
-  def queryBySelectedInMoviesJson(content: String, SelectedType: String) = {
-    QueryUtil.QueryMovieJson(df, content, SelectedType)
+  def queryBySelectedInBookJson(content: String, SelectedType: String) = {
+    QueryUtil.QueryBookJson(df, content, SelectedType)
   }
 
   /**
@@ -73,7 +73,7 @@ object BookRecommendation {
    * @return Array of [(Int,String,String,String,Date,Double)]
    *         with (movidId,selectedType,title,tagline,release_date,popularity)
    */
-  def queryBySeletedInMoviesNormal(content: String, SelectedType: String) = {
+  def queryBySeletedInBooksNormal(content: String, SelectedType: String) = {
     QueryUtil.QueryBookInfoNorm(df, content, SelectedType)
   }
 
@@ -90,11 +90,11 @@ object BookRecommendation {
     QueryUtil.QueryOfKeywords(keywordsRDD, df, content)
   }
   /**
-   * Sort the Array of movies
+   * Sort the Array of books
    * @param ds             The dataset of movies to be sorted
    * @param selectedType   The sort key word
    * @param order          The order type: desc or asc
-   * @return               Sorted movie dataset
+   * @return               Sorted book dataset
    */
   def SortBySelected(ds:Array[(Int,String,String,String,Date,Double)],selectedType:String="popularity",order:String="desc")= {
     selectedType match {
@@ -111,7 +111,7 @@ object BookRecommendation {
   }
 
 //  /**
-//   * Search movie by staffs
+//   * Search book by staffs
 //   *
 //   * @param content      The user input of specific staff
 //   * @param SelectedType Specify the content type: crew or cast
@@ -123,12 +123,12 @@ object BookRecommendation {
 //  }
 
   /**
-   * Search movies by movie name
-   * @param MovieName    The user input of movie name
-   * @return             Option of Array of [Int] contains the movie tmdbID
+   * Search books by book name
+   * @param BookName    The user input of book name
+   * @return             Option of Array of [Int] contains the book tmdbID
    */
-  def FindMovieByName(MovieName: String) = {
-    val id = QueryUtil.QueryMovieIdByName(df, MovieName).map(x => x._1)
+  def FindBookByName(BookName: String) = {
+    val id = QueryUtil.QueryBookIdByName(df, BookName).map(x => x._1)
     if (id.length != 0)
       Some(id)
     else None
