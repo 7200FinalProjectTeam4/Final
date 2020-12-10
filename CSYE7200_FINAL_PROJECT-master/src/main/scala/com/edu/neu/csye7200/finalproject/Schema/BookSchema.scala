@@ -1,65 +1,48 @@
-package com.edu.neu.csye7200.finalproject.Schema
+package csye7200FinalProject.Schema
 
-import org.apache.spark.sql.types._
+import org.apache.spark.sql.types.{BooleanType, DateType, DoubleType, FloatType, IntegerType, StringType, StructField, StructType}
 
 object BookSchema {
-  val movieSchema=StructType(
+
+
+  val bookSchema = StructType(
     Seq(
-      StructField("adult", BooleanType, true),
-      StructField("belongs_to_collection", StringType, true),
-      StructField("budget",IntegerType, true),
-      StructField("genres",StringType, true),
-      StructField("homepage",StringType, true),
-      StructField("id",IntegerType, true),
-      StructField("imdb_id",IntegerType, true),
-      StructField("original_language",StringType, true),
-      StructField("original_title",StringType, true),
-      StructField("overview",StringType, true),
-      StructField("popularity",DoubleType, true),
-      StructField("poster_path",StringType, true),
-      StructField("production_companies",StringType, true),
-      StructField("production_countries",StringType, true),
-      StructField("release_date",DateType, true),
-      StructField("revenue",IntegerType, true),
-      StructField("runtime",FloatType, true),
-      StructField("spoken_languages",StringType, true),
-      StructField("status",StringType, true),
-      StructField("tagline",StringType, true),
-      StructField("title",StringType, true),
-      StructField("video",BooleanType, true),
-      StructField("vote_average",FloatType, true),
-      StructField("vote_count",IntegerType, true)
+      StructField("Id", IntegerType, true),
+      StructField("Name", StringType, true),
+      StructField("Authors", StringType, true),
+      StructField("ISBN", StringType, true),
+      StructField("Rating", DoubleType, true),
+      StructField("PublishYear", IntegerType, true),
+      StructField("PublishMonth", IntegerType, true),
+      StructField("PublishDay", IntegerType, true),
+      StructField("Publisher", StringType, true),
+      StructField("RatingDist5", StringType, true),
+      StructField("RatingDist4", StringType, true),
+      StructField("RatingDist3", StringType, true),
+      StructField("RatingDist2", StringType, true),
+      StructField("RatingDist1", StringType, true),
+      StructField("RatingDistTotal", StringType, true),
+      StructField("CountsOfReview", IntegerType, true),
+      StructField("Language", StringType, true),
+      StructField("pagesNumber", IntegerType, true),
+      StructField("Description", StringType, true),
+      StructField("Count of text reviews", IntegerType, true),
+
     )
   )
-  val linkdataSchema=StructType(
+  val linkdataSchema = StructType(
     Seq(
-      StructField("movieId", IntegerType, false),
-      StructField("imdbId", StringType, false),
-      StructField("tmdbId", IntegerType, false)
+      StructField("bookId", IntegerType, false),
+      StructField("goodId", StringType, false),
+      StructField("greeksId", IntegerType, false)
     )
+
   )
-  val keywordsSchema=StructType(
+  val keywordsSchema = StructType(
     Seq(
       StructField("id", IntegerType, false),
       StructField("keywords", StringType, true)
     )
   )
-  val staffSchema=StructType(
-    Seq(
-      StructField("cast", StringType, false),
-      StructField("crew", StringType, true),
-      StructField("id",IntegerType,true)
-    )
-  )
-  val bookSchema=StructType(
-    Seq(
-      StructField("Id", IntegerType, true),
-      StructField("Name", StringType, true),
-      StructField("Authors",StringType,true),
-      StructField("Publisher",StringType,true),
-      StructField("PublishYear",IntegerType,true),
-      StructField("ISBN",StringType,true),
-      StructField("Rating",FloatType,true)
-    )
-  )
+
 }
