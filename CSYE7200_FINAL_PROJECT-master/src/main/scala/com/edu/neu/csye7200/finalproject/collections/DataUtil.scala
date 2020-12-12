@@ -34,7 +34,6 @@ object DataUtil {
 
   def getBooksArray  = {
     import spark.implicits._
-    // There are some null id in movies data and filter them out
     bookDF.select($"Id", $"Name").collect().filter(_(0) != null).map(x => (x.getInt(0), x.getString(1)))
   }
 
