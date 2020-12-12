@@ -15,13 +15,7 @@ object ALSUtil {
   var bestIters = 0
   var bestLambdas = -1.0
 
-  /**
-   * Claculate the RMSE computation
-   *
-   * @param model The trained model
-   * @param data  RDD of [[]Rating]] objects with userID, productID, and rating
-   * @return The RMSE of the model
-   */
+
   def computeRmse(model: MatrixFactorizationModel, data: RDD[Rating]) = {
     val prediction = model.predict(data.map(x => (x.user, x.product)))
     val predDataJoined = prediction.map(x => ((x.user, x.product), x.rating))
@@ -29,12 +23,7 @@ object ALSUtil {
     new RegressionMetrics(predDataJoined).rootMeanSquaredError
   }
 
-  /**
-   * Train and optimize model with validation set
-   *
-   * @param trainSet      RDD of [[]Rating]] objects of training set
-   * @param validationSet The validation set
-   */
+  
   def trainAndOptimizeModel(trainSet: RDD[Rating], validationSet: RDD[Rating]): Unit = {
     // Looking for the model of optimized parameter
     for (rank <- numRanks; iter <- numIters; lambda <- numLambdas) {
@@ -52,13 +41,7 @@ object ALSUtil {
     }
   }
 
-  /**
-   * Evaluate model on test set
-   *
-   * @param trainSet      RDD of [[]Rating]] objects of training set
-   * @param validationSet RDD of [[]Rating]] objects of validation set
-   * @param testSet       RDD of [[]Rating]] objects of test set
-   */
+
   def evaluateMode(trainSet: RDD[Rating], validationSet: RDD[Rating], testSet: RDD[Rating]) = {
     val testRmse = computeRmse(bestModel.get, testSet)
     println("-")
@@ -76,13 +59,7 @@ object ALSUtil {
     Array(testRmse, improvement)
   }
 
-  /**
-   * Make a personal recommendation
-   *
-   * @param books      Maps of movie which moviesId as key and title as value
-   * @param userRating RDD of [[]Rating]] objects of specific user rating information
-   * @return Array of 20 [Rating] objects
-   */
+ 
   def makeRecommendation(books: Map[Int, String], userRating: RDD[Rating]) = {
     // Make a personal recommendation and filter out the book already rated.
     val bookId = userRating.map(_.product).collect.toSeq
@@ -93,15 +70,7 @@ object ALSUtil {
       .take(20)
   }
 
-  /**
-   * Combine all the function above and print out the recommendation books
-   *
-   * @param trainSet      RDD of [[]Rating]] objects of training set
-   * @param validationSet RDD of [[]Rating]] objects of validation set
-   * @param testSet       RDD of [[]Rating]] objects of test set
-   * @param books         Maps of books which booksId as key and title as value
-   * @param userRating    RDD of [[]Rating]] objects of specific user rating information
-   */
+  
   def trainAndRecommendation(trainSet: RDD[Rating], validationSet: RDD[Rating], testSet: RDD[Rating]
                              , books: Map[Int, String], userRating: RDD[Rating]) = {
     trainAndOptimizeModel(trainSet, validationSet)
