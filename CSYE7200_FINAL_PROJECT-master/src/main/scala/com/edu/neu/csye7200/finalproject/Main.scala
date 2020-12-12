@@ -1,5 +1,5 @@
 package com.edu.neu.csye7200.finalproject
-import com.edu.neu.csye7200.finalproject.Interface.MovieRecommendation
+import com.edu.neu.csye7200.finalproject.Interface.BookRecommendation
 import com.edu.neu.csye7200.finalproject.configure.FileConfig
 import com.edu.neu.csye7200.finalproject.util.DataUtil
 import org.apache.spark.sql.SparkSession
@@ -91,16 +91,16 @@ object Main extends App {
                                       val content = scala.io.StdIn.readLine()
                                       println("")
                                       v match {
-                                        case 1 => MovieRecommendation.searchByName(content).take(10)
+                                        case 1 => BookRecommendation.searchByName(content).take(10)
                                           .foreach(line => println("Id: " + line._1, " Name: " + line._2, " Authors: " + line._3, " Publisher: " + line._4, " PublishYear: " + line._5, " ISBN: " + line._6, " Rating: " + line._7));
                                           println("")
-                                        case 2 => MovieRecommendation.searchByISBN(content)
+                                        case 2 => BookeRecommendation.searchByISBN(content)
                                           .foreach(line => println("Id: " + line._1, " Name: " + line._2, " Authors: " + line._3, " Publisher: " + line._4, " PublishYear: " + line._5, " ISBN: " + line._6, " Rating: " + line._7));
                                           println("")
-                                        case 3 => MovieRecommendation.searchByAuthor(content).take(10)
+                                        case 3 => BookRecommendation.searchByAuthor(content).take(10)
                                           .foreach(line => println("Id: " + line._1, " Name: " + line._2, " Authors: " + line._3, " Publisher: " + line._4, " PublishYear: " + line._5, " ISBN: " + line._6, " Rating: " + line._7));
                                           println("")
-                                        case 4 => MovieRecommendation.searchByPublisher(content).take(10)
+                                        case 4 => BookRecommendation.searchByPublisher(content).take(10)
                                           .foreach(line => println("Id: " + line._1, " Name: " + line._2, " Authors: " + line._3, " Publisher: " + line._4, " PublishYear: " + line._5, " ISBN: " + line._6, " Rating: " + line._7));
                                           println("")
                                         case _ => break
@@ -149,7 +149,7 @@ object Main extends App {
                           }
                           case 4 => {
                             println("Please Wait...")
-                            MovieRecommendation.getRecommendation(id.toInt)
+                            BookRecommendation.getRecommendation(id.toInt)
                             //                           scala.io.StdIn.readLine()
                             break
                           }
