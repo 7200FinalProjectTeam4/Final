@@ -10,12 +10,7 @@ object BookRecommendation {
 
   lazy val df=DataUtil.getBooksDF
 
-  /**
-   * This function trained the data and get the recommendation movie
-   * for specific user and print the result.
-   * @param userId     The specific user of recommendation
-   * @return           Return the RMSE and improvement of the Model
-   */
+ 
   def getRecommendation(userId: Int) = {
     //RDD[long, Rating]
     val ratings = DataUtil.getAllRating(FileConfig.ratingFile)
@@ -53,49 +48,21 @@ object BookRecommendation {
     //      Train model and optimize model with validation set
     ALSUtil.trainAndRecommendation(trainSet, validationSet, testSet, books, userRatingRDD)
   }
-  /**
-   * Search Json Format sInfo in movie
-   *
-   * @param content      The specified content
-   * @param SelectedType Selected Search Type
-   * @return Array of [(Int,String,String,String,Date,Double)]
-   *         with (movidId,selectedType,title,tagline,release_date,popularity)
-   */
+  
   def queryBySelectedInBookJson(content: String, SelectedType: String) = {
     QueryUtil.QueryBookJson(df, content, SelectedType)
   }
 
-  /**
-   * Search String Info in movie
-   *
-   * @param content      The specified content
-   * @param SelectedType Selected Search Type
-   * @return Array of [(Int,String,String,String,Date,Double)]
-   *         with (movidId,selectedType,title,tagline,release_date,popularity)
-   */
   def queryBySeletedInBooksNormal(content: String, SelectedType: String) = {
     QueryUtil.QueryBookInfoNorm(df, content, SelectedType)
   }
 
-  /**
-   * Search movie by keywords
-   *
-   * @param content The specified keywords
-   * @return Array of [(Int,String,String,String,Date,Double)]
-   *         with (movidId,selectedType,title,tagline,release_date,popularity)
-   */
   def queryByKeywords(content: String) = {
     //Query of keywords
     val keywordsRDD = DataUtil.getKeywords(FileConfig.keywordsFile)
     QueryUtil.QueryOfKeywords(keywordsRDD, df, content)
   }
-  /**
-   * Sort the Array of books
-   * @param ds             The dataset of movies to be sorted
-   * @param selectedType   The sort key word
-   * @param order          The order type: desc or asc
-   * @return               Sorted book dataset
-   */
+ 
   def SortBySelected(ds:Array[(Int,String,String,String,Date,Double)],selectedType:String="popularity",order:String="desc")= {
     selectedType match {
       case "popularity" => order match {
@@ -110,23 +77,7 @@ object BookRecommendation {
     }
   }
 
-//  /**
-//   * Search book by staffs
-//   *
-//   * @param content      The user input of specific staff
-//   * @param SelectedType Specify the content type: crew or cast
-//   * @return Array of [[Int, String, String, String, Date, Double]]
-//   *         with (id, staff,title,tagline,release_date,popularity)
-//   */
-//  def queryBystaffInCredits(content: String, SelectedType: String) = {
-//    QueryUtil.QueryOfstaff(DataUtil.getStaff(FileConfig.creditFIle), df, content, SelectedType)
-//  }
 
-  /**
-   * Search books by book name
-   * @param BookName    The user input of book name
-   * @return             Option of Array of [Int] contains the book tmdbID
-   */
   def FindBookByName(BookName: String) = {
     val id = QueryUtil.QueryBookIdByName(df, BookName).map(x => x._1)
     if (id.length != 0)
@@ -134,34 +85,7 @@ object BookRecommendation {
     else None
   }
 
-//  /** add rating row to csv file to have better perform train model and result
-//   *
-//   * @param RatingsInfo userid,movieId,rating,timestamp(System.currentTimeMillis/1000)
-//   * @param MovieName   movieName
-//   * @tparam T
-//   */
-//  def UpdateRatingsByRecommendation(RatingsInfo: List[String], MovieName: String) = {
-//    val movieId = FindMovieByName(MovieName).getOrElse(Array())
-//    val writer = CSVWriter.open(FileConfig.ratingFile, append = true)
-//    if (movieId.nonEmpty) {
-//      val links = DataUtil.getLinkData(FileConfig.linkFile)
-//      val imdbId = DataUtil.bookIdTransfer(movieId, links)
-//      writer.writeRow(insert(RatingsInfo, 1, imdbId(0)))
-//      println("Rating Successfully")
-//    }
-//    else println("Cannot find the movie you entered")
-//    writer.close()
-//
-//  }
 
-  /** insert value into desired position
-   *
-   * @param list  original List
-   * @param i     position desired to insert
-   * @param value the insert value
-   * @tparam T
-   * @return desire list
-   */
   def insert(list: List[String], i: Int, value: Int) = {
     list.take(i) ++ List(value.toString) ++ list.drop(i)
   }
