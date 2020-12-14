@@ -127,13 +127,13 @@ object Main extends App {
                                   println("Please Rate <" + content + "> (0~5):")
                                   val rating = scala.io.StdIn.readLine()
 
-                                    if (rating.equals("q")) break
-                                    Try(rating.toFloat) match {
-                                      case Success(r) => {
-                                        if (r >= 0 && r <= 5) {
-                                          Thread.sleep(3000)
-                                          println("Successfully Rated <" + content + "> for " + rating + "! Thank you!")
-                                          println(""); break
+                                    if(rating.equals("q")) break
+                                    Try(rating.toFloat) match{
+                                      case Success(r)=> {
+                                        if(r>=0&&r<=5) {
+                                          BookRecommendation.UpdateRatingsByRecommendation(List(id.toInt.toString, r.toString,
+                                                        (System.currentTimeMillis()%10000000000.00).toLong.toString), content)
+                                          break
                                         }
                                         else {
                                           println("out of range")
